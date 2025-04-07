@@ -113,7 +113,7 @@ public class TicketDAO {
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ticket WHERE VEHICLE_REG_NUMBER = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ticket WHERE VEHICLE_REG_NUMBER = ? AND OUT_TIME IS NOT NULL");
             ps.setString(1, vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

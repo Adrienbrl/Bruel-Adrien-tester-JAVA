@@ -165,7 +165,6 @@ public class FareCalculatorServiceTest {
 
         fareCalculatorService.calculateFare(ticket, true); // 
     
-        // Assert
         assertEquals(0.95 * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
     }
 
@@ -186,5 +185,3 @@ public class FareCalculatorServiceTest {
     }
 
 }
-
-
