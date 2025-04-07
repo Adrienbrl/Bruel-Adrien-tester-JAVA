@@ -112,6 +112,16 @@ public class ParkingServiceTest {
 
         assertNull(parkingSpot);
     }
+
+    @Test
+    public void getNextParkingNumberIfAvailableParkingNumberWrongArgument() throws Exception{
+        when(inputReaderUtil.readSelection()).thenReturn(0);
+
+        ParkingSpot parkingSpot = parkingService.getNextParkingNumberIfAvailable();
+
+        assertNull(parkingSpot);
+        verify(parkingSpotDAO,Mockito.times(0)).getNextAvailableSlot(any(ParkingType.class));
+    }
 }
 
 
