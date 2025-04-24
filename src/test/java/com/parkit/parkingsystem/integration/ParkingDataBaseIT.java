@@ -100,7 +100,7 @@ public class ParkingDataBaseIT {
         oldTicket.setPrice(1.5);
         ticketDAO.saveTicket(oldTicket);
 
-        when(inputReaderUtil.readSelection()).thenReturn(1); // 1 = CAR
+        when(inputReaderUtil.readSelection()).thenReturn(1); 
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
