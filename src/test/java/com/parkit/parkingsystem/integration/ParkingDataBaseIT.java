@@ -92,7 +92,7 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingLotExitRecurringUser() throws Exception {
         Ticket oldTicket = new Ticket();
-        oldTicket.setId(100);
+        oldTicket.setId(200);
         oldTicket.setVehicleRegNumber("ABCDEF");
         oldTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
         oldTicket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000)));
