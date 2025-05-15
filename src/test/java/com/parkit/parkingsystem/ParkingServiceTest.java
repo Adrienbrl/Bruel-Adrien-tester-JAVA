@@ -40,6 +40,7 @@ public class ParkingServiceTest {
         parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     }
 
+    /* Vérifie que le ticket est bien enregistré lors de l'entrée d'un véhicule */
     @Test
     public void processIncomingVehicleTest() throws Exception{
         when(inputReaderUtil.readSelection()).thenReturn(1);
@@ -50,6 +51,7 @@ public class ParkingServiceTest {
         verify(ticketDAO,Mockito.times(1)).saveTicket(any(Ticket.class));
     }
 
+    /* Vérifie que la sortie d’un véhicule met bien à jour la place de parking (succès) */
     @Test 
     public void processExitingVehicletest() throws Exception{
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
@@ -71,6 +73,7 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
     }
 
+    /* Vérifie que la place de parking n’est pas mise à jour si l’enregistrement du ticket échoue */
     @Test 
     public void processExitingVehicleTestFalse() throws Exception {
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
@@ -90,6 +93,7 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, Mockito.times(0)).updateParking(any(ParkingSpot.class));
     }
 
+    /* Vérifie qu’une place disponible est correctement retournée pour un vélo */
     @Test 
     public void getNextParkingNumberIfAvailableTest() throws Exception{
         when(inputReaderUtil.readSelection()).thenReturn(2);
@@ -102,6 +106,7 @@ public class ParkingServiceTest {
         assertTrue(parkingSpot.isAvailable());
     }
 
+    /* Vérifie que null est retourné si aucune place n’est disponible pour un vélo */
     @Test 
     public void getNextParkingNumberIfAvailableParkingNumberNotFoundTest() throws Exception{
         when(inputReaderUtil.readSelection()).thenReturn(2);
@@ -112,6 +117,7 @@ public class ParkingServiceTest {
         assertNull(parkingSpot);
     }
 
+    /* Vérifie que le service retourne null et ne fait rien si la sélection utilisateur est invalide */
     @Test
     public void getNextParkingNumberIfAvailableParkingNumberWrongArgument() throws Exception{
         when(inputReaderUtil.readSelection()).thenReturn(0);

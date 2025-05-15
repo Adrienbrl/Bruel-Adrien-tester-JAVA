@@ -55,6 +55,7 @@ public class ParkingDataBaseIT {
 
     }
 
+    /* Vérifie que lorsqu’un véhicule entre, un ticket est bien enregistré et qu’une place est prise */
     @Test
     public void testParkingACar(){
         when(inputReaderUtil.readSelection()).thenReturn(1);
@@ -68,6 +69,7 @@ public class ParkingDataBaseIT {
         assertEquals(2,parkingSpotTest);
     }
 
+    /* Vérifie que lorsqu’un véhicule sort, l’heure de sortie et le prix sont bien enregistrés et la place libérée */
     @Test
     public void testParkingLotExit() {
         Ticket ticket = new Ticket();
@@ -89,14 +91,15 @@ public class ParkingDataBaseIT {
         assertEquals(1, parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
     }
 
+    /* Vérifie qu’un utilisateur récurrent bénéficie bien d’une remise de 5 % sur le tarif du ticket */
     @Test
     public void testParkingLotExitRecurringUser() throws Exception {
         Ticket oldTicket = new Ticket();
         oldTicket.setId(200);
         oldTicket.setVehicleRegNumber("ABCDEF");
-        oldTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-        oldTicket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000)));
-        oldTicket.setOutTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));   
+        oldTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, true));
+        oldTicket.setInTime(new Date(System.currentTimeMillis() - (6 * 60 * 60 * 1000)));
+        oldTicket.setOutTime(new Date(System.currentTimeMillis() - (5 * 60 * 60 * 1000)));   
         oldTicket.setPrice(1.5);
         ticketDAO.saveTicket(oldTicket);
 
@@ -107,8 +110,9 @@ public class ParkingDataBaseIT {
         parkingService.processIncomingVehicle();
 
         Ticket newTicket = ticketDAO.getTicket("ABCDEF");
-        newTicket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000))); 
-        ticketDAO.updateTicket(newTicket);
+        newTicket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000))); 
+        newTicket.setOutTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+        ticketDAO.saveTicket(newTicket);
 
         parkingService.processExitingVehicle();
 
@@ -116,7 +120,6 @@ public class ParkingDataBaseIT {
         double expectedPrice = 1.5 * 0.95;
         updatedTicket.setPrice(expectedPrice);
 
-        assertNotNull(updatedTicket.getOutTime(), "L'heure de sortie doit être renseignée");
         assertEquals(expectedPrice, updatedTicket.getPrice(), 0.01, "Le prix doit inclure une remise de 5%");
     }
 

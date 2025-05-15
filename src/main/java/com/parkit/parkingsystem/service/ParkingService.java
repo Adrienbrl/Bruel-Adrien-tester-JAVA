@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
+/* ParkingService est responsable de la gestion des entrées et sorties de véhicules.
+ * Cette classe intéragit avec les DAO, lit les entrées utilisateurs et calcule les tarifs.
+ */
 public class ParkingService {
 
     private static final Logger logger = LogManager.getLogger("ParkingService");
@@ -27,6 +30,9 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }   
 
+    /* Gère l'entrée d'un nouveau véhicule, attribue une place libre, crée et enregistre un ticket
+     * puis marque la place occupée.
+     */
     public void processIncomingVehicle() {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
@@ -58,11 +64,20 @@ public class ParkingService {
         }
     }
 
+    /**
+     * Demande à l'utilisateur de saisir le numéro d'immatriculation.
+     * @return une chaîne représentant l'immatriculation
+     * @throws Exception si la saisie est invalide
+     */
     private String getVehichleRegNumber() throws Exception {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
 
+    /**
+     * Retourne la prochaine place libre en fonction du type de véhicule.
+     * @return un objet ParkingSpot ou null si aucune place disponible
+     */
     public ParkingSpot getNextParkingNumberIfAvailable(){
         int parkingNumber=0;
         ParkingSpot parkingSpot = null;
@@ -82,6 +97,11 @@ public class ParkingService {
         return parkingSpot;
     }
 
+    /**
+     * Demande à l'utilisateur de saisir le type de véhicule.
+     * @return ParkingType (CAR ou BIKE)
+     * @throws IllegalArgumentException si l'entrée est invalide
+     */
     private ParkingType getVehichleType(){
         System.out.println("Please select vehicle type from menu");
         System.out.println("1 CAR");
@@ -101,6 +121,9 @@ public class ParkingService {
         }
     }
 
+    /* Gère la sortie d'un véhicule, récupère le ticket existant, calcul le tarif et 
+     * met à jour le ticket et libère la place
+     */
     public void processExitingVehicle() {
         try{
             String vehicleRegNumber = getVehichleRegNumber();

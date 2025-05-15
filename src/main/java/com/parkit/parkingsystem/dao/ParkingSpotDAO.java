@@ -11,11 +11,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/* ParkingSpotDAO est responsable des opérations liées aux places de parking dans la BDD. */
 public class ParkingSpotDAO {
     private static final Logger logger = LogManager.getLogger("ParkingSpotDAO");
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+     /**
+     * Récupère le numéro de la prochaine place de parking disponible
+     * en fonction du type de véhicule (CAR, BIKE).
+     *
+     * @param parkingType le type de place de parking à rechercher
+     * @return le numéro de la place disponible, ou -1 si aucune n’est trouvée ou en cas d’erreur
+     */
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;
         int result=-1;
@@ -37,6 +45,12 @@ public class ParkingSpotDAO {
         return result;
     }
 
+    /**
+     * Met à jour la disponibilité d'une place de parking (libre ou occupée).
+     *
+     * @param parkingSpot l’objet {@link ParkingSpot} contenant l’ID et l’état de disponibilité
+     * @return true si la mise à jour a réussi, false sinon
+     */
     public boolean updateParking(ParkingSpot parkingSpot){
         //update the availability fo that parking slot
         Connection con = null;

@@ -13,12 +13,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+/* TicketDAO est responsable de l'accès aux données concernant les tickets de stationnement dans la base. */
 public class TicketDAO {
 
     private static final Logger logger = LogManager.getLogger("TicketDAO");
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+     /**
+     * Sauvegarde un nouveau ticket en base de données.
+     *
+     * @param ticket le ticket à enregistrer
+     * @return true si l'opération a réussi, false sinon
+     */
     public boolean saveTicket(Ticket ticket){
         Connection con = null;
         try {
@@ -40,6 +47,12 @@ public class TicketDAO {
         }
     }
     
+    /**
+     * Récupère le ticket correspondant à une plaque d'immatriculation.
+     *
+     * @param vehicleRegNumber la plaque d'immatriculation
+     * @return l'objet Ticket correspondant ou null si non trouvé
+     */
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = null;
@@ -69,6 +82,12 @@ public class TicketDAO {
         return ticket;
     }
 
+    /**
+     * Met à jour le ticket existant (prix + heure de sortie).
+     *
+     * @param ticket le ticket à mettre à jour
+     * @return true si la mise à jour a réussi, false sinon
+     */
     public boolean updateTicket(Ticket ticket) {
         Connection con = null;
         try {
@@ -87,6 +106,12 @@ public class TicketDAO {
         return false;
     }
 
+    /**
+     * Compte combien de fois un véhicule est venu dans le parking.
+     *
+     * @param vehicleRegNumber la plaque du véhicule
+     * @return le nombre de tickets enregistrés
+     */
     public int countByVehicleRegNumber(String vehicleRegNumber){
         int visitCount = 0;
         Connection con = null;
@@ -108,6 +133,12 @@ public class TicketDAO {
         return visitCount;
     }
 
+    /**
+     * Compte le nombre de tickets associés à un véhicule **déjà sorti du parking**.
+     *
+     * @param vehicleRegNumber la plaque d'immatriculation
+     * @return le nombre de tickets avec une heure de sortie non nulle
+     */
     public int getNbTicket(String vehicleRegNumber) {
         int ticketCount = 0;
         Connection con = null;

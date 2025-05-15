@@ -8,15 +8,18 @@ public class DataBasePrepareService {
 
     DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
 
+    /* Nettoie la BDD : réinitialise toutes les places de parking comme étant disponibles et
+     * supprime tous les tickets présents dans la base
+     */
     public void clearDataBaseEntries(){
         Connection connection = null;
         try{
             connection = dataBaseTestConfig.getConnection();
 
-            //set parking entries to available
+            //Rend toutes les places de parking disponibles
             connection.prepareStatement("update parking set available = true").execute();
 
-            //clear ticket entries;
+            //Supprime tous les enregistrements de tickets
             connection.prepareStatement("truncate table ticket").execute();
 
         }catch(Exception e){
