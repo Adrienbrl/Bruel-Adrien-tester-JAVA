@@ -29,10 +29,7 @@ public class FareCalculatorService {
         long duration = outTime - inTime;
         double minutes = duration / (1000.0 * 60);
         double hours = minutes / 60.0;
-        System.out.println(duration);
-        System.out.println(minutes);
-        System.out.println(hours);
-        System.out.println("-----------------");
+        
         /* Tarif gratuit si durée inférieur à 30 minutes */
         if (minutes < 30){
             ticket.setPrice(0);

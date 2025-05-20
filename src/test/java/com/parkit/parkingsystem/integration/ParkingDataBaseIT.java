@@ -108,17 +108,26 @@ public class ParkingDataBaseIT {
 
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
+        parkingService.processExitingVehicle();
 
-        Ticket newTicket = ticketDAO.getTicket("ABCDEF");
+        Ticket newTicket = new Ticket();
+        newTicket.setId(201);
+        newTicket.setVehicleRegNumber("ABCDEF");
+        newTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, true));
         newTicket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000))); 
         newTicket.setOutTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+        newTicket.setPrice(1.5);
         ticketDAO.saveTicket(newTicket);
 
+        when(inputReaderUtil.readSelection()).thenReturn(1); 
+        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+
+        parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
 
         Ticket updatedTicket = ticketDAO.getTicket("ABCDEF");
         double expectedPrice = 1.5 * 0.95;
-        updatedTicket.setPrice(expectedPrice);
+        //updatedTicket.setPrice(expectedPrice);
 
         assertEquals(expectedPrice, updatedTicket.getPrice(), 0.01, "Le prix doit inclure une remise de 5%");
     }
