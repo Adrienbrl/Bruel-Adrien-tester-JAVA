@@ -22,11 +22,11 @@ public class FareCalculatorService {
         }
 
         /* Récupération de l'heure d'entrée et de sortie en millisecondes */
-        long inTime = ticket.getInTime().getTime();
-        long outTime = ticket.getOutTime().getTime();
+        double inTime = ticket.getInTime().getTime();
+        double outTime = ticket.getOutTime().getTime();
        
         /* Calcul de la durée en millisecondes, puis conversion en minutes et en heures */
-        long duration = outTime - inTime;
+        double duration = outTime - inTime;
         double minutes = duration / (1000.0 * 60);
         double hours = minutes / 60.0;
         
